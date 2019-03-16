@@ -46,7 +46,7 @@ public class MultiplicationServiceImplTest {
 
 		User user = new User("Test User");
 		Multiplication multiplication = new Multiplication(10, 60);
-		MultiplicationResultAttempt multiplicationResultAttempt = new MultiplicationResultAttempt(user, multiplication, 600);
+		MultiplicationResultAttempt multiplicationResultAttempt = new MultiplicationResultAttempt(user, multiplication, 600, false);
 
 		//when //then
 		assertThat(multiplicationService.checkAttempt(multiplicationResultAttempt)).isTrue();
@@ -59,7 +59,7 @@ public class MultiplicationServiceImplTest {
 
 		User user = new User("Test User");
 		Multiplication multiplication = new Multiplication(10, 60);
-		MultiplicationResultAttempt multiplicationResultAttempt = new MultiplicationResultAttempt(user, multiplication, 1800);
+		MultiplicationResultAttempt multiplicationResultAttempt = new MultiplicationResultAttempt(user, multiplication, 1800, false);
 
 		//when //then
 		assertThat(multiplicationService.checkAttempt(multiplicationResultAttempt)).isFalse();

@@ -18,6 +18,8 @@ public class MultiplicationResultAttempt {
 	private Multiplication multiplication;
 	private int resultAttempt;
 
+	private boolean correct;
+
 	public boolean isResultMatching() {
 		return this.multiplication.multiply() == resultAttempt;
 	}

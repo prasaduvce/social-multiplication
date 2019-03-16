@@ -59,7 +59,7 @@ public class MultiplicationResultAttemptControllerTest {
 
 		User user = new User("john");
 		Multiplication multiplication = new Multiplication(50, 70);
-		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500);
+		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500, correct);
 
 		//when
 		MockHttpServletResponse response = mockMvc.perform(
@@ -70,6 +70,6 @@ public class MultiplicationResultAttemptControllerTest {
 
 		//then
 		Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-		Assertions.assertThat(response.getContentAsString()).isEqualTo(jsonResponse.write(new ResultResponse(correct)).getJson());
+		Assertions.assertThat(response.getContentAsString()).isEqualTo(jsonResult.write(attempt).getJson());
 	}
 }

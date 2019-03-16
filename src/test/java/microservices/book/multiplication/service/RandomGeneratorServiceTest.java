@@ -5,6 +5,7 @@ import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.assertj.core.api.Assertions;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class RandomGeneratorServiceTest {
 	@Autowired
 	private RandomGeneratorService randomGeneratorService;
 
+	@Ignore
 	@Test
 	public void generateRandomService() {
 		List<Integer> integers = IntStream.range(0, 100)
