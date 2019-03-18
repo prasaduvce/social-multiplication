@@ -1,26 +1,45 @@
 package microservices.book.multiplication.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@RequiredArgsConstructor
 @Setter(AccessLevel.PRIVATE)
 public class MultiplicationResultAttempt {
 
-	private User user;
-	private Multiplication multiplication;
-	private int resultAttempt;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-	private boolean correct;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "USER_ID")
+	private final User user;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "MULTIPLICATION_ID")
+	private final Multiplication multiplication;
+	private final int resultAttempt;
+
+	private final boolean correct;
 
 	public boolean isResultMatching() {
 		return this.multiplication.multiply() == resultAttempt;
+	}
+
+	public MultiplicationResultAttempt() {
+		this.user = null;
+		this.multiplication = null;
+		this.resultAttempt = -1;
+		this.correct = false;
 	}
 }

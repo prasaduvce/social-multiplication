@@ -1,6 +1,7 @@
 package microservices.book.multiplication.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.ResultResponse;
@@ -36,7 +37,7 @@ public class MultiplicationResultAttemptControllerTest {
 	private MockMvc mockMvc;
 
 	private JacksonTester<MultiplicationResultAttempt> jsonResult;
-	private JacksonTester<ResultResponse> jsonResponse;
+	private JacksonTester<List<MultiplicationResultAttempt>> jsonResultAttemptList;
 
 	@Before
 	public void setup() {
