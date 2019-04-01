@@ -3,6 +3,8 @@ package microservices.book.multiplication.service;
 import java.util.List;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
+import microservices.book.multiplication.event.EventDispatcher;
+import microservices.book.multiplication.event.MultiplicationSolvedEvent;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,17 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
 	private UserRepository userRepository;
 
+	private EventDispatcher eventDispatcher;
+
 	@Autowired
 	public MultiplicationServiceImpl(RandomGeneratorService randomGeneratorService,
 			MultiplicationResultAttemptRepository attemptRepository,
-			UserRepository userRepository) {
+			UserRepository userRepository,
+			EventDispatcher eventDispatcher) {
 		this.randomGeneratorService = randomGeneratorService;
 		this.attemptRepository = attemptRepository;
 		this.userRepository = userRepository;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	@Override
@@ -43,6 +49,8 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 		MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(resultAttempt.getUser(), resultAttempt.getMultiplication(), resultAttempt.getResultAttempt(), resultMatching);
 
 		attemptRepository.save(checkedAttempt);
+
+		eventDispatcher.send(new MultiplicationSolvedEvent(checkedAttempt.getId(), checkedAttempt.getUser().getId(), checkedAttempt.isCorrect()));
 		return checkedAttempt.isCorrect();
 	}
 

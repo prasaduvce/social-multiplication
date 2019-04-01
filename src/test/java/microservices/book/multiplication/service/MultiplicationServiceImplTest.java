@@ -7,9 +7,10 @@ import java.util.Optional;
 import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.MultiplicationResultAttempt;
 import microservices.book.multiplication.domain.User;
+import microservices.book.multiplication.event.EventDispatcher;
+import microservices.book.multiplication.event.MultiplicationSolvedEvent;
 import microservices.book.multiplication.repository.MultiplicationResultAttemptRepository;
 import microservices.book.multiplication.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,12 +30,15 @@ public class MultiplicationServiceImplTest {
 	@Mock
 	private UserRepository userRepository;
 
+	@Mock
+	private EventDispatcher eventDispatcher;
+
 	private MultiplicationServiceImpl multiplicationService;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		multiplicationService = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, userRepository);
+		multiplicationService = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, userRepository, eventDispatcher);
 	}
 
 	@Test
@@ -53,6 +57,7 @@ public class MultiplicationServiceImplTest {
 		//assert
 		assertThat(attemptResult).isTrue();
 		Mockito.verify(attemptRepository).save(verifiedAttempt);
+		Mockito.verify(eventDispatcher).send(new MultiplicationSolvedEvent(verifiedAttempt.getId(), verifiedAttempt.getUser().getId(), verifiedAttempt.isCorrect()));
 	}
 
 	@Test
@@ -70,6 +75,7 @@ public class MultiplicationServiceImplTest {
 		//then
 		assertThat(attemptResult).isFalse();
 		Mockito.verify(attemptRepository).save(multiplicationResultAttempt);
+		Mockito.verify(eventDispatcher).send(new MultiplicationSolvedEvent(multiplicationResultAttempt.getId(), multiplicationResultAttempt.getUser().getId(), multiplicationResultAttempt.isCorrect()));
 	}
 
 	@Test
